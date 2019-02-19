@@ -71,6 +71,10 @@ class Discoverer(object):
         _, top_level_dir = self._getStartDirs()
         try:
             # try name as a dotted module name first
+            log.debug(
+                "IMPORT DEBUG: nose2 in nose2.plugins.loader.discovery.Discoverer.loadTestsFromName() "
+                "imports %s" % name
+            )
             __import__(name)
             module = sys.modules[name]
         except (KeyboardInterrupt, SystemExit):
@@ -111,6 +115,10 @@ class Discoverer(object):
         if start_dir != top_level_dir:
             is_not_importable = not os.path.isfile(
                 os.path.join(start_dir, '__init__.py'))
+        log.debug(
+            "IMPORT DEBUG: nose2 in nose2.plugins.loader.discovery.Discoverer._getStartDirs() "
+            "imports %s" % start_dir
+        )
         if is_not_importable:
             raise ImportError(
                 'Start directory is not importable: %r' % start_dir)

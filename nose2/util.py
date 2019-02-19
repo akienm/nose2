@@ -15,6 +15,7 @@ import six
 import inspect
 from inspect import isgeneratorfunction
 
+log = logging.getLogger(__name__)
 
 __unittest = True
 IDENT_RE = re.compile(r'^[_a-zA-Z]\w*$', re.UNICODE)
@@ -74,6 +75,7 @@ def name_from_path(path):
 
 def module_from_name(name):
     """Import module from ``name``"""
+    log.debug("IMPORT DEBUG: nose2 in nose2.utils.module_from_name() imports %s" % name)
     __import__(name)
     return sys.modules[name]
 
@@ -153,7 +155,6 @@ def try_import_module_from_name(splitted_name):
 
     For instance, if ``splitted_name`` is ['a', 'b', 'c'] but only ``a.b`` is
     importable, this function:
-    
         1. tries to import ``a.b.c`` and fails
         2. tries to import ``a.b`` and succeeds
         3. return ``a.b`` and the exception that occured at step 1.
@@ -162,6 +163,10 @@ def try_import_module_from_name(splitted_name):
     import_error = None
     while splitted_name:
         try:
+            log.debug(
+                "IMPORT DEBUG: nose2 in nose2.utils.try_import_module_from_name() imports %s" %
+                '.'.join(splitted_name)
+            )
             module = __import__('.'.join(splitted_name))
             break
         except:
